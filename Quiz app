@@ -1,0 +1,33 @@
+                                                                                *Feb 9th 11.59*
+Backend:
+    get q's
+    q type
+    + marks
+    - marks
+    
+    questions.json:
+        "questions":
+            "question content"
+            "qtype"
+            "+ marks"
+            "- marks"
+            "correct Ans"
+    
+Quiz app:
+     i)  MCQs
+     ii) Fill in the blanks
+    iii) True and False
+    ~iv) Write a paragraph, grade on spelling errors and punctuation.
+      v) Multiple Answer questions
+     vi) Integer Answer Questions 
+    vii) Numerical (abcd.xyzw) Answer Questions
+  ~viii) Matrix Match 
+
+should also scroll to a new q
+nav bar 
+logo
+
+Display answers
+Give Score
+     i) -ve marking
+implement vim keybinding: hjkl,gg,G
