@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz!</title>
-    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
+
+<!-- 
+    Figure out how to save answers
+    prepare the response page
+    give Score
+    prepare scroll action to incrase the currentQNo
+    improve UI
+-->
+
 <body>
+    <!-- anti cheat
+oncontextmenu="return false;"
+style="user-select: none;" -->
     <div class="nav">
-        <button id="previous">⬅️</button>
-        <button id="next">➡️</button>
+        <div class = "logo">💡</div>
+        <p id="title">huiiiiiii</p>
+        <div class = "buttons">
+            <button id="previous">⬅️</button>
+            <button id="next">➡️</button>
+        </div>
     </div>
     <div id="Questions">
-        
+        <!-- <div class="questionContainer">
+            <div class="question" id="number">
+                Numerical question
+                <input type="text" class="FIB" pattern= "^[1-9]\d{0,2}(\.\d{3})*(,\d+)?$" maxlength = "10" size="10"/>
+            </div>
+        </div> -->
     </div>
-    <!-- <div id="questionContainer">
-        <div id="question"> hi </div>
-    </div> -->
+    <script src="https://cdn.jsdelivr.net/npm/@codewithkyle/notifyjs@3/notify.min.js"></script>
     <script type="text/javascript" src="questions.js"></script>
     <script type="text/javascript" src="index.js"></script>
 </body>
+
 </html>

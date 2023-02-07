@@ -1,46 +1,62 @@
-
 let currentQNo = 0
 let answers = []
 let questions = questionData.questions
-let totalQuestionsNo = questionData.qNo
+let totalQuestionsNo = questionData.questions.length
+let height = window.innerHeight
 
 let body = document.getElementById("Questions")
 let nextButton = document.getElementById('next')
 let previousButton = document.getElementById('previous')
+document.getElementById('title').textContent = questionData.title
+
+
+
 //                                   *Navigation*
 // set first question
-nextButton.onclick = function (event) {
+function gotoNextQuestion(event) {
     currentQNo++
     console.log(currentQNo)
     if (currentQNo < totalQuestionsNo) {
-        // save answers and set option
-        saveAns(currentQNo)
-        document.getElementById("questionContainer"+currentQNo).scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
-        // scroll by 100% height down
+        document.getElementById("questionContainer" + currentQNo).scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     } else {
-        currentQNo = totalQuestionsNo -1
+        currentQNo = totalQuestionsNo - 1
         // enable save button
-        //show end of quiz, some css anim to the question and the submit button
+
         console.log('end')
     }
 }
-previousButton.onclick = function (event) {
-    (currentQNo!=0)?currentQNo--:currentQNo = 0
+function gotoPrevQuestion(event) {
+    (currentQNo != 0) ? currentQNo-- : currentQNo = 0
     console.log(currentQNo)
     if (currentQNo > -1) {
-        saveAns(currentQNo)
-        document.getElementById("questionContainer"+currentQNo).scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
+        document.getElementById("questionContainer" + currentQNo).scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     } else {
         currentQNo = 0
         //show end of quiz, some css anim to the question and the submit button
         console.log('start')
     }
 }
-addQuestions()
-document.getElementById("questionContainer0").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
 
+document.addEventListener("keypress", function onEvent(event) {
+    if (event.key === "k" ) 
+        gotoPrevQuestion()
+    else if (event.key === "j") 
+        gotoNextQuestion()
+    
+});
+document.addEventListener("keydown", function onEvent(event) {
+    if (event.key === "ArrowLeft" ) 
+        gotoPrevQuestion()
+    else if (event.key === "ArrowRight") 
+        gotoNextQuestion()
+    
+});
+nextButton.onclick = gotoNextQuestion
+previousButton.onclick = gotoPrevQuestion
 //                                  *setting questions*
-// setQuestion(questions[0])
+addQuestions()
+document.getElementById("questionContainer0").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+
 function addQuestions() {
     questions.forEach(function (e) {
         setQuestion(e)
@@ -50,42 +66,102 @@ function addQuestions() {
 }
 function setQuestion(currentQuestionData) {
     let parentDiv = document.createElement('div')
-    parentDiv.id = "questionContainer"+currentQNo
+    parentDiv.id = "questionContainer" + currentQNo
     parentDiv.classList.add("questionContainer")
     let questionText = document.createElement('div')
-    questionText.id = 'question'
+    questionText.classList.add('question')
     questionText.textContent = currentQuestionData.content
     parentDiv.appendChild(questionText)
 
     if (currentQuestionData.qtype == 'MCQ') {
+        let optionsContainer = document.createElement('div')
+        optionsContainer.classList.add('optionsContainer')
         currentQuestionData.options.forEach(function (option) {
+
             let optionContainer = document.createElement('div')
-            optionContainer.id = "optionContainer"+currentQNo
+            optionContainer.id = "optionContainer" + currentQNo
             optionContainer.classList.add("optionContainer")
+
             let optionElement = document.createElement('input')
             optionElement.setAttribute('type', 'radio')
-            optionElement.setAttribute('name', 'question'+currentQNo)
-            optionElement.setAttribute('value',option)
+            optionElement.setAttribute('name', 'question' + currentQNo)
+            optionElement.setAttribute('value', option)
 
             let labelElement = document.createElement('label')
             labelElement.textContent = "\t" + option
 
+            optionContainer.appendChild(optionElement)
+            optionContainer.appendChild(labelElement)
+
+            optionsContainer.appendChild(optionContainer)
+        })
+        parentDiv.appendChild(optionsContainer)
+    } else if (currentQuestionData.qtype == 'FIB') {
+        console.log("FIB")
+        questionText.id = "FIBText"
+        let prevTextElement = document.createElement('span')
+        prevTextElement.textContent = currentQuestionData.contentBeforeBlank;
+        questionText.appendChild(prevTextElement)
+
+        let blankElement = document.createElement('input')
+        blankElement.setAttribute('type', 'text')
+        blankElement.setAttribute('size', currentQuestionData.size)
+        blankElement.setAttribute('maxlength', currentQuestionData.size)
+        blankElement.classList.add("FIB")
+        questionText.appendChild(blankElement)
+
+        let nextTextElement = document.createElement('span')
+        nextTextElement.textContent = currentQuestionData.contentAfterBlank;
+        questionText.appendChild(nextTextElement)
+    } else if (currentQuestionData.qtype == 'TF') {
+        ["True", "False"].forEach(function (option) {
+
+            let optionContainer = document.createElement('div')
+            optionContainer.id = "optionContainer" + currentQNo
+            optionContainer.classList.add("optionContainer")
+
+            let optionElement = document.createElement('input')
+            optionElement.setAttribute('type', 'radio')
+            optionElement.setAttribute('name', 'question' + currentQNo)
+            optionElement.setAttribute('value', option)
+
+            let labelElement = document.createElement('label')
+            labelElement.textContent = "\t" + option
 
             optionContainer.appendChild(optionElement)
             optionContainer.appendChild(labelElement)
 
             parentDiv.appendChild(optionContainer)
-            body.appendChild(parentDiv)
         })
+    } else if (currentQuestionData.qtype == 'INT') {
+        questionText.id = "number"
+        let blankElement = document.createElement('input')
+        blankElement.setAttribute('type', 'number')
+        blankElement.setAttribute('size', currentQuestionData.size)
+        blankElement.setAttribute('maxlength', currentQuestionData.size)
+        blankElement.classList.add("FIB")
+        questionText.appendChild(blankElement)
+    } else if (currentQuestionData.qtype == 'NUM') {
+        questionText.id = "number"
+        let blankElement = document.createElement('input')
+        blankElement.setAttribute('type', 'text')
+        blankElement.setAttribute('size', currentQuestionData.size)
+        blankElement.setAttribute('maxlength', currentQuestionData.size)
+        blankElement.classList.add("FIB")
+        blankElement.setAttribute('pattern', '^[1-9]\\d{0,2}(\\.\\d{3})*(,\\d+)?$')
+        questionText.appendChild(blankElement)
+
     }
+    body.appendChild(parentDiv)
 }
-function saveAns(i){
-    let question = document.getElementById("optionContainer"+i)
-    let radioButtons = question.querySelectorAll('input[type="radio"]'); 
-    for (const radioButton of radioButtons) {
-        if (radioButton.checked) {
-            answers[i].push(radioButton.value)
-            break;
-        }
+function saveAns() {
+    //figure this shit
+    let questionParents = document.querySelectorAll('div[class=QuestionContainer');
+    let i = 0;
+    for (const questionDiv of questionParents) {
+        
+
     }
+
+    console.log(answers)
 }
