@@ -73,6 +73,7 @@ button{
 }
 .optionContainer{
   align-self:flex-start;
+  padding-left: 44px;
 }
 .question{
   color:antiquewhite;
@@ -93,6 +94,7 @@ label{
   justify-content: flex-start;
   align-items:center;
 
+  padding-left: 44px;
 }
 input{
   border: 5px solid #909090;

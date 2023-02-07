@@ -38,18 +38,18 @@ function gotoPrevQuestion(event) {
 }
 
 document.addEventListener("keypress", function onEvent(event) {
-    if (event.key === "k" ) 
+    if (event.key === "k")
         gotoPrevQuestion()
-    else if (event.key === "j") 
+    else if (event.key === "j")
         gotoNextQuestion()
-    
+
 });
 document.addEventListener("keydown", function onEvent(event) {
-    if (event.key === "ArrowLeft" ) 
+    if (event.key === "ArrowLeft")
         gotoPrevQuestion()
-    else if (event.key === "ArrowRight") 
+    else if (event.key === "ArrowRight")
         gotoNextQuestion()
-    
+
 });
 nextButton.onclick = gotoNextQuestion
 previousButton.onclick = gotoPrevQuestion
@@ -73,7 +73,7 @@ function setQuestion(currentQuestionData) {
     questionText.textContent = currentQuestionData.content
     parentDiv.appendChild(questionText)
 
-    if (currentQuestionData.qtype == 'MCQ') {
+    if (currentQuestionData.type == 'MCQ') {
         let optionsContainer = document.createElement('div')
         optionsContainer.classList.add('optionsContainer')
         currentQuestionData.options.forEach(function (option) {
@@ -96,8 +96,7 @@ function setQuestion(currentQuestionData) {
             optionsContainer.appendChild(optionContainer)
         })
         parentDiv.appendChild(optionsContainer)
-    } else if (currentQuestionData.qtype == 'FIB') {
-        console.log("FIB")
+    } else if (currentQuestionData.type == 'FIB') {
         questionText.id = "FIBText"
         let prevTextElement = document.createElement('span')
         prevTextElement.textContent = currentQuestionData.contentBeforeBlank;
@@ -113,7 +112,7 @@ function setQuestion(currentQuestionData) {
         let nextTextElement = document.createElement('span')
         nextTextElement.textContent = currentQuestionData.contentAfterBlank;
         questionText.appendChild(nextTextElement)
-    } else if (currentQuestionData.qtype == 'TF') {
+    } else if (currentQuestionData.type == 'TF') {
         ["True", "False"].forEach(function (option) {
 
             let optionContainer = document.createElement('div')
@@ -133,7 +132,7 @@ function setQuestion(currentQuestionData) {
 
             parentDiv.appendChild(optionContainer)
         })
-    } else if (currentQuestionData.qtype == 'INT') {
+    } else if (currentQuestionData.type == 'INT') {
         questionText.id = "number"
         let blankElement = document.createElement('input')
         blankElement.setAttribute('type', 'number')
@@ -141,7 +140,7 @@ function setQuestion(currentQuestionData) {
         blankElement.setAttribute('maxlength', currentQuestionData.size)
         blankElement.classList.add("FIB")
         questionText.appendChild(blankElement)
-    } else if (currentQuestionData.qtype == 'NUM') {
+    } else if (currentQuestionData.type == 'NUM') {
         questionText.id = "number"
         let blankElement = document.createElement('input')
         blankElement.setAttribute('type', 'text')
@@ -154,14 +153,44 @@ function setQuestion(currentQuestionData) {
     }
     body.appendChild(parentDiv)
 }
+
 function saveAns() {
-    //figure this shit
-    let questionParents = document.querySelectorAll('div[class=QuestionContainer');
+    let questionParents = document.querySelectorAll('div[class=questionContainer]');
     let i = 0;
     for (const questionDiv of questionParents) {
-        
-
+        let questionType = questionData.questions[i].type
+        // console.log(i,questions[i],questionType)
+        if (questionType == "MCQ" || questionType == "TF") {
+            let radioButtons = questionDiv.querySelectorAll('input[type=radio]')
+            let gotAns = false
+            for (const radioButton of radioButtons)
+                if (radioButton.checked) {
+                    gotAns = true
+                    answers.push(radioButton.value)
+                }
+            if(!gotAns) answers.push("Skipped")
+        } else if (questionType == "FIB") {
+            let blank = questionDiv.querySelectorAll('input[type=text]')
+            if(blank[0].value.length==0)
+                answers.push("skipped")
+            else
+                answers.push(blank[0].value)
+        } else if (questionType == "INT") {
+            let num = questionDiv.querySelectorAll('input[type=number]')
+            if(num[0].value.length == 0) 
+                answers.push("Skipped")
+            else
+                answers.push( num[0].value)
+        } else if (questionType == "NUM") {
+            let num = questionDiv.querySelectorAll('input[type=text]')
+            if(num[0].value.length == 0) 
+                answers.push("Skipped")
+            else
+                answers.push(num[0].value)
+        }else{
+            answers.push("Skipped")
+        }
+        i++;
     }
-
     console.log(answers)
 }
