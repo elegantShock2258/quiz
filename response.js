@@ -4,9 +4,6 @@ let score = 0
 let answerData = localStorage.getItem("answers").split(",")
 let questionData = JSON.parse(localStorage.getItem("questions"))
 let totalQuestionsNo = questionData.questions.length
-let title = document.getElementById('title')
-title.textContent = questionData.title + " Results"
-console.log(currentQNo, totalQuestionsNo)
 //                                   *Navigation*
 function gotoNextQuestion(event) {
     currentQNo++
@@ -47,7 +44,6 @@ document.addEventListener("keydown", function onEvent(event) {
 
 });
 
-console.log(questionData)
 function genMCQ(data, userAns, i) {
     let questionDiv = document.createElement("div")
     questionDiv.classList.add("question")
@@ -60,22 +56,27 @@ function genMCQ(data, userAns, i) {
         optionContainer.classList.add("option")
         let emoji = ""
         // add the emoji and styling
-        console.log(userAns)
         if (option == data.ans)
             if (userAns == "Skipped") {
+                console.log(`mcq ${i} skipped`)
                 emoji = "➖"
                 optionContainer.classList.add("skipped")
             }
             else if (userAns == data.ans) {
+                console.log(`mcq ${i} correct`)
                 score += questionData.questions[i].posMarks
-                emoji = "☑"
+                emoji = "☑️"
                 optionContainer.classList.add("correct")
             }
-            else if (option == userAns && userAns != data.ans) {
-                score -= questionData.questions[i].negMarks
-                emoji = "❎"
-                optionContainer.classList.add("wrong")
-            }
+        if (userAns != data.ans && userAns == option) {
+            console.log(`mcq ${i} incorrect`)
+            score -= questionData.questions[i].negMarks
+            emoji = "❎"
+            optionContainer.classList.add("wrong")
+        } else if (option == data.ans && userAns != data.ans) {
+            emoji = "☑️"
+            optionContainer.classList.add("correct")
+        }
         optionContainer.textContent = `${emoji} ${option}`
         questionDiv.appendChild(optionContainer)
     })
@@ -83,6 +84,7 @@ function genMCQ(data, userAns, i) {
 }
 
 function genFIB(data, userAns, i) {
+    console.log(data, ",", userAns)
     let questionDiv = document.createElement("div")
     questionDiv.classList.add("question")
     questionDiv.id = "questionContainer" + i
@@ -100,12 +102,12 @@ function genFIB(data, userAns, i) {
 
     if (userAns == "skipped") {
         emoji = "➖"
-        answer.textContent = emoji +" "+data.ans
+        answer.textContent = emoji + " " + data.ans
         answer.classList.add("skipped")
     }
     else if (userAns == data.ans) {
         score += questionData.questions[i].posMarks
-        emoji = "☑"
+        emoji = "☑️"
         answer.textContent = emoji + userAns
         answer.classList.add("correct")
     }
@@ -138,14 +140,14 @@ function genINT(data, userAns, i) {
     let answer = document.createElement("div")
     answer.classList.add("num")
     questionDiv.appendChild(answer)
-
+    console.log(data, ",", userAns)
     if (userAns == "skipped") {
         emoji = "➖"
-        answer.textContent = emoji +" "+data.ans
+        answer.textContent = emoji + " " + data.ans
         answer.classList.add("skipped")
     }
     else if (userAns == data.ans) {
-        emoji = "☑"
+        emoji = "☑️"
         score += questionData.questions[i].posMarks
         answer.textContent = emoji + userAns
         answer.classList.add("correct")
@@ -160,9 +162,7 @@ function genINT(data, userAns, i) {
 
 
 let i = 0
-console.log(questionData.questions)
 answerData.forEach(function (ans) {
-    console.log(questionData.questions[i])
     let questionType = questionData.questions[i].type;
     if (questionType == "MCQ" || questionType == "TF") {
         genMCQ(questionData.questions[i], ans, i)
@@ -174,4 +174,4 @@ answerData.forEach(function (ans) {
     }
     i++
 })
-console.log(score)
+document.getElementById("score").textContent = score

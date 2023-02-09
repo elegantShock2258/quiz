@@ -8,6 +8,8 @@ body {
 }
 
 #title {
+    position: absolute;
+    left: 0px;
     color: aliceblue;
     font-family: 'Times New Roman', Times, serif;
     font-size: 5rem;
@@ -19,15 +21,34 @@ body {
     font-weight: bolder;
     text-align: center;
 }
+#score{
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.topNav{
+    width: 100%;
+    position: absolute;
+    top:5px;
+    display: flex;
+    align-items:flex-start;
+}
+.scoreContainer{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:#ffffff40;
+    padding:15px;
+    border-radius:10px;
+    margin: 20px;
+    position: fixed;
+    right:0px;
+    top:5px;
+    color: bisque;
+    font-size: 4rem;
+}
 .blank{
     border-bottom: 2px dashed bisque;
     padding: 7px;
     margin: 7px;
     border-radius:5px;
-}
-ul{
-    list-style: none;
-    display:inline;
 }
 .num{
     color:aliceblue;
