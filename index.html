@@ -10,11 +10,11 @@
 </head>
 
 <!-- 
-    Figure out how to save answers
     prepare the response page
     give Score
     prepare scroll action to incrase the currentQNo
     improve UI
+    add a Qno thing
 -->
 
 <body>
@@ -22,7 +22,7 @@
 oncontextmenu="return false;"
 style="user-select: none;" -->
     <div class="nav">
-        <div class = "logo">💡</div>
+        <div class = "logo" onclick="document.getElementById('questionContainer0').scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });">💡</div>
         <p id="title">huiiiiiii</p>
         <div class = "buttons">
             <button id="previous">⬅️</button>

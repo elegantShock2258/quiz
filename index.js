@@ -3,16 +3,15 @@ let answers = []
 let questions = questionData.questions
 let totalQuestionsNo = questionData.questions.length
 let height = window.innerHeight
+let lastScroll = 0
 
 let body = document.getElementById("Questions")
 let nextButton = document.getElementById('next')
 let previousButton = document.getElementById('previous')
+
 document.getElementById('title').textContent = questionData.title
 
-
-
 //                                   *Navigation*
-// set first question
 function gotoNextQuestion(event) {
     currentQNo++
     console.log(currentQNo)
@@ -20,8 +19,6 @@ function gotoNextQuestion(event) {
         document.getElementById("questionContainer" + currentQNo).scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     } else {
         currentQNo = totalQuestionsNo - 1
-        // enable save button
-
         console.log('end')
     }
 }
@@ -32,8 +29,6 @@ function gotoPrevQuestion(event) {
         document.getElementById("questionContainer" + currentQNo).scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     } else {
         currentQNo = 0
-        //show end of quiz, some css anim to the question and the submit button
-        console.log('start')
     }
 }
 
@@ -168,29 +163,32 @@ function saveAns() {
                     gotAns = true
                     answers.push(radioButton.value)
                 }
-            if(!gotAns) answers.push("Skipped")
+            if (!gotAns) answers.push("Skipped")
         } else if (questionType == "FIB") {
             let blank = questionDiv.querySelectorAll('input[type=text]')
-            if(blank[0].value.length==0)
+            if (blank[0].value.length == 0)
                 answers.push("skipped")
             else
                 answers.push(blank[0].value)
         } else if (questionType == "INT") {
             let num = questionDiv.querySelectorAll('input[type=number]')
-            if(num[0].value.length == 0) 
-                answers.push("Skipped")
-            else
-                answers.push( num[0].value)
-        } else if (questionType == "NUM") {
-            let num = questionDiv.querySelectorAll('input[type=text]')
-            if(num[0].value.length == 0) 
-                answers.push("Skipped")
+            if (num[0].value.length == 0)
+                answers.push("skipped")
             else
                 answers.push(num[0].value)
-        }else{
-            answers.push("Skipped")
+        } else if (questionType == "NUM") {
+            let num = questionDiv.querySelectorAll('input[type=text]')
+            if (num[0].value.length == 0)
+                answers.push("skipped")
+            else
+                answers.push(num[0].value)
+        } else {
+            answers.push("skipped")
         }
         i++;
     }
-    console.log(answers)
+    console.log(answers,JSON.stringify(questionData))
+    localStorage.setItem("answers", answers)
+    localStorage.setItem("questions",JSON.stringify(questionData))
+    location.href = 'response.html'
 }
