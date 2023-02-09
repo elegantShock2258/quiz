@@ -15,6 +15,13 @@ body {
   display:flex;
   background-color: #303030;
 }
+.submit{
+  background-color:rgb(140, 16, 151);
+  border-radius: 50%;
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+}
 .nav{
   box-sizing:border-box;
   position: fixed;

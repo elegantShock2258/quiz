@@ -11,6 +11,16 @@ let previousButton = document.getElementById('previous')
 
 document.getElementById('title').textContent = questionData.title
 
+function spawnSubmitButton(){
+    let button = document.createElement('button')
+    button.classList.add("submit")
+
+    button.textContent = "🗒️"
+    button.onclick = saveAns
+    body.appendChild(button)
+}
+
+
 //                                   *Navigation*
 function gotoNextQuestion(event) {
     currentQNo++
@@ -19,6 +29,7 @@ function gotoNextQuestion(event) {
         document.getElementById("questionContainer" + currentQNo).scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     } else {
         currentQNo = totalQuestionsNo - 1
+        spawnSubmitButton();
         console.log('end')
     }
 }
@@ -191,4 +202,6 @@ function saveAns() {
     localStorage.setItem("answers", answers)
     localStorage.setItem("questions",JSON.stringify(questionData))
     location.href = 'response.html'
+
+    nextButton.onclick = gotoNextQuestion
 }
